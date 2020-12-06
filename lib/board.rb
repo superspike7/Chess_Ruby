@@ -1,4 +1,5 @@
 require_relative './square.rb'
+require 'colorize'
 
 class Board 
   attr_accessor :board
@@ -17,9 +18,30 @@ class Board
    numbers = ('1'..'8').to_a
    letters = ('a'..'h').to_a
    letters.product(numbers).zip(square_array){ |a, e| e.coordinates = a.join}
+   set_color(square_array)
    return square_array
   end
 
+  def set_color(arr)
+   arr.each do | square |
+    if square.coordinates =~ /[aceg]/
+     arr.index(square).odd? ? square.color = 'light_white' : square.color = 'black'
+    else
+     arr.index(square).odd? ? square.color = 'black' : square.color = 'light_white' 
+    end
+   end
+  end
+
+  def show
+    count = 0
+    @board.each do |square| 
+      print "#{square.coordinates} ".colorize(:color => :light_black, :background => :"#{square.color}")
+      count += 1
+      print "\n" if count % 8 == 0
+    end
+    puts
+  end
 end
 
-p Board.new.board
+Board.new.show
+
