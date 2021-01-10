@@ -7,6 +7,7 @@ class Board
   def initialize
     @board = make_board
     @mode = nil
+    default
   end
 
   def selection_mode
@@ -25,19 +26,52 @@ class Board
   def set_color(arr)
    arr.each do | square |
     if square.coordinates =~ /[aceg]/
-     arr.index(square).odd? ? square.color = 'light_white' : square.color = 'black'
+     arr.index(square).odd? ? square.color = 'light_white' : square.color = 'light_blue'
     else
-     arr.index(square).odd? ? square.color = 'black' : square.color = 'light_white' 
+     arr.index(square).odd? ? square.color = 'light_blue' : square.color = 'light_white' 
     end
    end
   end
 
+  def default
+    # white
+    @board.each do |square|
+      case square.coordinates
+      when /b[1-9]/
+          square.piece = "♙"
+      when /a[18]/
+        square.piece = "♖"
+      when /a[27]/
+        square.piece = "♘"
+      when /a[36]/
+        square.piece = "♗"
+      when /a4/
+        square.piece = "♕"
+      when /a5/
+        square.piece = "♔"
+      when /g[1-9]/
+        square.piece = "♟︎"
+      when /h[18]/
+      square.piece = "♜"
+      when /h[27]/
+      square.piece = "♞"
+      when /h[36]/
+      square.piece = "♝"
+      when /h4/
+      square.piece = "♚"
+      when /h5/
+      square.piece = "♛"
+      end
+    end
+  end
+
+
   def show
     count = 0
     @board.each do |square| 
-      print "#{square.coordinates} ".colorize(:color => :light_black, :background => :"#{square.color}")
+      print "#{square.piece} ".colorize(:color => :black, :background => :"#{square.color}")
       count += 1
-      print "\n" if count % 8 == 0
+      print "\n" if count % 8==0
     end
     puts
   end
